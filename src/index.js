@@ -1,7 +1,4 @@
-import express from "express";
-import mongoose from "mongoose";
-import { DB_NAME } from "../src/constants.js";
-const app = express();
+import { app } from "./app.js";
 import dotenv from "dotenv";
 dotenv.config({
   path: "./env",
@@ -14,6 +11,7 @@ import connectionDB from "./db/index.js";
 (async () => {
   try {
     await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
+    // this is to listen to errors
     app.on("error", (errors) => {
       console.log("Errrr ", errors);
       throw error;
@@ -28,4 +26,13 @@ import connectionDB from "./db/index.js";
  */
 
 // second approach
-connectionDB();
+// since connectionDB is async function it will return a promise
+connectionDB().then(
+  ()=>{
+    app.listen(process.env.PORT || 8000, ()=>{
+      console.log(`Server running at port : ${process.env.PORT}`)
+    });
+  }
+).catch((err)=>{
+  console.log("Mongo db connection failed!!!", err)
+});
