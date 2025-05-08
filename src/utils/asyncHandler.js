@@ -5,7 +5,7 @@
 // There are two ways of doing it
 
 //1.
-const asyncHandler = (fn) => async(req,res,next) => {
+/* const asyncHandler = (fn) => async(req,res,next) => {
     try{
         await fn(req,res,next)
     } catch (error){
@@ -14,13 +14,14 @@ const asyncHandler = (fn) => async(req,res,next) => {
             message: err.message
         })
     }
-}
-
-/* 2. const asyncHandler = (fn) => {
-    (req,res,next) => {
-        Promise.resolve(fn(req,res,nxt)).catch(err) => next(err)
-    }
 } */
+
+// 2. 
+const asyncHandler = (fn) => {
+    return (req,res,next) => {
+        Promise.resolve(fn(req,res,next)).catch((err) => next(err))
+    }
+}
 
 export {asyncHandler}
 //or export default asyncHandler;
