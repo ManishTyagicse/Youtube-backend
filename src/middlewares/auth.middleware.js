@@ -1,7 +1,7 @@
 // both req and res have the methods of middleware
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
